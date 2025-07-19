@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Placement Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+            to { box-shadow: 0 0 30px rgba(99, 102, 241, 0.6); }
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo-glow {
+            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3));
+        }
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+        .input-focus:focus {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-ripple::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
+            transform: translate(-50%, -50%);
+        }
+        .btn-ripple:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 6s infinite linear;
+        }
+        @keyframes particle-float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-lg border-b border-indigo-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <!-- Placify Logo -->
+                    <div class="flex items-center logo-glow">
+                        <svg class="w-10 h-10 mr-3" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="url(#gradient1)" stroke="url(#gradient2)" stroke-width="2"/>
+                            <path d="M12 20L18 26L28 14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <defs>
+                                <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea"/>
+                                    <stop offset="100%" style="stop-color:#764ba2"/>
+                                </linearGradient>
+                                <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#4f46e5"/>
+                                    <stop offset="100%" style="stop-color:#7c3aed"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span class="text-2xl font-bold gradient-text">Placify</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="showLogin()" class="text-gray-600 hover:text-indigo-600 transition-all duration-300 font-medium">Login</button>
+                    <button onclick="showAnalytics()" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl btn-ripple">Analytics</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Login Selection Page -->
+        <div id="loginSelection" class="fade-in relative overflow-hidden">
+            <!-- Floating Particles -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="particle" style="left: 10%; width: 4px; height: 4px; animation-delay: 0s;"></div>
+                <div class="particle" style="left: 20%; width: 6px; height: 6px; animation-delay: 1s;"></div>
+                <div class="particle" style="left: 30%; width: 3px; height: 3px; animation-delay: 2s;"></div>
+                <div class="particle" style="left: 40%; width: 5px; height: 5px; animation-delay: 3s;"></div>
+                <div class="particle" style="left: 50%; width: 4px; height: 4px; animation-delay: 4s;"></div>
+                <div class="particle" style="left: 60%; width: 6px; height: 6px; animation-delay: 5s;"></div>
+                <div class="particle" style="left: 70%; width: 3px; height: 3px; animation-delay: 0.5s;"></div>
+                <div class="particle" style="left: 80%; width: 5px; height: 5px; animation-delay: 1.5s;"></div>
+                <div class="particle" style="left: 90%; width: 4px; height: 4px; animation-delay: 2.5s;"></div>
+            </div>
+
+            <div class="text-center mb-16 relative z-10">
+                <!-- Main Logo -->
+                <div class="flex justify-center mb-8">
+                    <div class="float-animation">
+                        <svg class="w-24 h-24 logo-glow" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="40" cy="40" r="36" fill="url(#mainGradient1)" stroke="url(#mainGradient2)" stroke-width="4"/>
+                            <path d="M24 40L36 52L56 28" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="40" cy="40" r="36" fill="none" stroke="url(#pulseGradient)" stroke-width="2" opacity="0.5" class="pulse-glow"/>
+                            <defs>
+                                <linearGradient id="mainGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea"/>
+                                    <stop offset="50%" style="stop-color:#764ba2"/>
+                                    <stop offset="100%" style="stop-color:#f093fb"/>
+                                </linearGradient>
+                                <linearGradient id="mainGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#4f46e5"/>
+                                    <stop offset="100%" style="stop-color:#7c3aed"/>
+                                </linearGradient>
+                                <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#a855f7"/>
+                                    <stop offset="100%" style="stop-color:#3b82f6"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="text-5xl font-bold gradient-text mb-6">Welcome to Placify</h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">Your intelligent gateway to successful campus placements with AI-powered resume analysis and seamless recruitment management</p>
+                <div class="mt-8 flex justify-center space-x-8">
+                    <div class="flex items-center text-gray-500">
+                        <i class="fas fa-robot text-indigo-500 mr-2"></i>
+                        <span class="text-sm">AI-Powered OCR</span>
+                    </div>
+                    <div class="flex items-center text-gray-500">
+                        <i class="fas fa-chart-line text-purple-500 mr-2"></i>
+                        <span class="text-sm">Smart Analytics</span>
+                    </div>
+                    <div class="flex items-center text-gray-500">
+                        <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+                        <span class="text-sm">Secure Platform</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto relative z-10">
+                <!-- Student Login Card -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-10 card-hover cursor-pointer border border-white/20" onclick="showStudentLogin()">
+                    <div class="text-center">
+                        <div class="bg-gradient-to-br from-blue-400 to-blue-600 w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg float-animation">
+                            <i class="fas fa-user-graduate text-4xl text-white"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4">Student Portal</h3>
+                        <p class="text-gray-600 mb-8 leading-relaxed">Upload resume with AI-powered skill extraction, track applications in real-time, and manage your complete placement journey</p>
+                        <div class="space-y-3 mb-8">
+                            <div class="flex items-center justify-center text-sm text-gray-500">
+                                <i class="fas fa-file-upload text-blue-500 mr-2"></i>
+                                <span>Smart Resume Processing</span>
+                            </div>
+                            <div class="flex items-center justify-center text-sm text-gray-500">
+                                <i class="fas fa-history text-blue-500 mr-2"></i>
+                                <span>Application Tracking</span>
+                            </div>
+                            <div class="flex items-center justify-center text-sm text-gray-500">
+                                <i class="fas fa-bell text-blue-500 mr-2"></i>
+                                <span>Real-time Notifications</span>
+                            </div>
+                        </div>
+                        <button class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-8 py-4 rounded-xl hover:from-blue-600 hover:to-blue-800 transition-all duration-300 w-full font-semibold text-lg shadow-lg hover:shadow-xl btn-ripple transform hover:scale-105">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Enter Student Portal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recruiter Login Card -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-10 card-hover cursor-pointer border border-white/20" onclick="showRecruiterLogin()">
+                    <div class="text-center">
+                        <div class="bg-gradient-to-br from-green-400 to-green-600 w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg float-animation" style="animation-delay: 0.5s;">
+                            <i class="fas fa-building text-4xl text-white"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4">Recruiter Portal</h3>
+                        <p class="text-gray-600 mb-8 leading-relaxed">Access comprehensive student profiles, manage applications efficiently, and communicate seamlessly with top candidates</p>
+                        <div class="space-y-3 mb-8">
+                            <div class="flex items-center justify-center text-sm text-gray-500">
+                                <i class="fas fa-users text-green-500 mr-2"></i>
+                                <span>Student Database Access</span>
+                            </div>
+                            <div class="flex items-center justify-center text-sm text-gray-500">
+                                <i class="fas fa-comments text-green-500 mr-2"></i>
+                                <span>Integrated Messaging</span>
+                            </div>
+                            <div class="flex items-center justify-center text-sm text-gray-500">
+                                <i class="fas fa-analytics text-green-500 mr-2"></i>
+                                <span>Hiring Analytics</span>
+                            </div>
+                        </div>
+                        <button class="bg-gradient-to-r from-green-500 to-green-700 text-white px-8 py-4 rounded-xl hover:from-green-600 hover:to-green-800 transition-all duration-300 w-full font-semibold text-lg shadow-lg hover:shadow-xl btn-ripple transform hover:scale-105">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Enter Recruiter Portal
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Features -->
+            <div class="mt-20 text-center">
+                <div class="grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-eye text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">OCR Technology</h4>
+                        <p class="text-sm text-gray-600">Advanced resume parsing</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-tags text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">Auto Tagging</h4>
+                        <p class="text-sm text-gray-600">Smart skill extraction</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chart-pie text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">Analytics</h4>
+                        <p class="text-sm text-gray-600">Comprehensive insights</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-filter text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">Smart Filters</h4>
+                        <p class="text-sm text-gray-600">Eligibility matching</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Login Form -->
+        <div id="studentLogin" class="hidden fade-in">
+            <div class="max-w-lg mx-auto bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-10 border border-white/20">
+                <div class="text-center mb-10">
+                    <div class="bg-gradient-to-br from-blue-400 to-blue-600 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg float-animation">
+                        <i class="fas fa-user-graduate text-3xl text-white"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold gradient-text mb-2">Student Login</h2>
+                    <p class="text-gray-600">Access your placement dashboard</p>
+                </div>
+                <form onsubmit="loginStudent(event)" class="space-y-6">
+                    <div class="relative">
+                        <label class="block text-gray-700 text-sm font-semibold mb-3">Student ID</label>
+                        <div class="relative">
+                            <i class="fas fa-id-card absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="studentId" class="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 input-focus bg-white/50 backdrop-blur-sm" placeholder="Enter your student ID" required>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="block text-gray-700 text-sm font-semibold mb-3">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="password" id="studentPassword" class="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 input-focus bg-white/50 backdrop-blur-sm" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-2 text-gray-600">Remember me</span>
+                        </label>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white py-4 rounded-xl hover:from-blue-600 hover:to-blue-800 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl btn-ripple transform hover:scale-105">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login to Dashboard
+                    </button>
+                </form>
+                <div class="mt-8 text-center">
+                    <button onclick="showLogin()" class="text-blue-600 hover:text-blue-800 font-medium transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to selection
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Recruiter Login Form -->
+        <div id="recruiterLogin" class="hidden fade-in">
+            <div class="max-w-lg mx-auto bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-10 border border-white/20">
+                <div class="text-center mb-10">
+                    <div class="bg-gradient-to-br from-green-400 to-green-600 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg float-animation">
+                        <i class="fas fa-building text-3xl text-white"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold gradient-text mb-2">Recruiter Login</h2>
+                    <p class="text-gray-600">Access your recruitment dashboard</p>
+                </div>
+                <form onsubmit="loginRecruiter(event)" class="space-y-6">
+                    <div class="relative">
+                        <label class="block text-gray-700 text-sm font-semibold mb-3">Company Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="email" id="recruiterEmail" class="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:border-green-500 input-focus bg-white/50 backdrop-blur-sm" placeholder="Enter company email" required>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="block text-gray-700 text-sm font-semibold mb-3">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="password" id="recruiterPassword" class="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:border-green-500 input-focus bg-white/50 backdrop-blur-sm" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            <span class="ml-2 text-gray-600">Remember me</span>
+                        </label>
+                        <a href="#" class="text-green-600 hover:text-green-800 font-medium">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-4 rounded-xl hover:from-green-600 hover:to-green-800 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl btn-ripple transform hover:scale-105">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login to Dashboard
+                    </button>
+                </form>
+                <div class="mt-8 text-center">
+                    <button onclick="showLogin()" class="text-green-600 hover:text-green-800 font-medium transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to selection
+                    </button>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500">
+                    <p>Demo credentials: Any Email + Any Password</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Dashboard -->
+        <div id="studentDashboard" class="hidden fade-in">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Student Dashboard</h1>
+                <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </button>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Resume Upload Section -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-file-upload text-blue-600 mr-2"></i>Upload Resume
+                        </h3>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                            <p class="text-gray-600 mb-4">Drag and drop your resume or click to browse</p>
+                            <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" class="hidden" onchange="handleResumeUpload(event)">
+                            <button onclick="document.getElementById('resumeUpload').click()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Choose File
+                            </button>
+                        </div>
+                        <div id="resumePreview" class="mt-4 hidden">
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                        <span id="fileName" class="text-gray-800"></span>
+                                    </div>
+                                    <button onclick="processResume()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
+                                        Process with OCR
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extracted Skills -->
+                    <div id="skillsSection" class="bg-white rounded-xl shadow-lg p-6 mb-8 hidden">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-tags text-purple-600 mr-2"></i>Extracted Skills
+                        </h3>
+                        <div id="skillsTags" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Application History -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-history text-orange-600 mr-2"></i>Application History
+                        </h3>
+                        <div id="applicationHistory" class="space-y-4">
+                            <!-- Sample applications -->
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Google Inc.</h4>
+                                        <p class="text-gray-600 text-sm">Software Engineer Intern</p>
+                                        <p class="text-gray-500 text-xs">Applied: March 15, 2024</p>
+                                    </div>
+                                    <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Under Review</span>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Microsoft</h4>
+                                        <p class="text-gray-600 text-sm">Full Stack Developer</p>
+                                        <p class="text-gray-500 text-xs">Applied: March 10, 2024</p>
+                                    </div>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Interview Scheduled</span>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Amazon</h4>
+                                        <p class="text-gray-600 text-sm">Cloud Solutions Architect</p>
+                                        <p class="text-gray-500 text-xs">Applied: March 5, 2024</p>
+                                    </div>
+                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Not Selected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Summary -->
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Profile Summary</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Student ID:</span>
+                                <span class="font-semibold" id="profileStudentId">CS2024001</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Applications:</span>
+                                <span class="font-semibold">3</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Interviews:</span>
+                                <span class="font-semibold">1</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Status:</span>
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-search mr-2"></i>Browse Jobs
+                            </button>
+                            <button class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">
+                                <i class="fas fa-calendar mr-2"></i>Schedule Mock Interview
+                            </button>
+                            <button class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                                <i class="fas fa-chart-line mr-2"></i>View Analytics
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recruiter Dashboard -->
+        <div id="recruiterDashboard" class="hidden fade-in">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Recruiter Dashboard</h1>
+                <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </button>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Student Database -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-gray-800">
+                                <i class="fas fa-users text-blue-600 mr-2"></i>Student Database
+                            </h3>
+                            <div class="flex space-x-2">
+                                <input type="text" placeholder="Search students..." class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Student ID</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Skills</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">GPA</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-4 py-4 text-sm text-gray-900">CS2024001</td>
+                                        <td class="px-4 py-4 text-sm text-gray-900">John Doe</td>
+                                        <td class="px-4 py-4 text-sm">
+                                            <div class="flex flex-wrap gap-1">
+                                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">React</span>
+                                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Node.js</span>
+                                                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs">Python</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-4 text-sm text-gray-900">8.5</td>
+                                        <td class="px-4 py-4 text-sm">
+                                            <button onclick="viewStudent('CS2024001')" class="text-blue-600 hover:text-blue-800 mr-2">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button onclick="messageStudent('CS2024001')" class="text-green-600 hover:text-green-800">
+                                                <i class="fas fa-message"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-4 text-sm text-gray-900">CS2024002</td>
+                                        <td class="px-4 py-4 text-sm text-gray-900">Jane Smith</td>
+                                        <td class="px-4 py-4 text-sm">
+                                            <div class="flex flex-wrap gap-1">
+                                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Java</span>
+                                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Spring</span>
+                                                <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-xs">MySQL</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-4 text-sm text-gray-900">9.2</td>
+                                        <td class="px-4 py-4 text-sm">
+                                            <button onclick="viewStudent('CS2024002')" class="text-blue-600 hover:text-blue-800 mr-2">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button onclick="messageStudent('CS2024002')" class="text-green-600 hover:text-green-800">
+                                                <i class="fas fa-message"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-4 text-sm text-gray-900">CS2024003</td>
+                                        <td class="px-4 py-4 text-sm text-gray-900">Mike Johnson</td>
+                                        <td class="px-4 py-4 text-sm">
+                                            <div class="flex flex-wrap gap-1">
+                                                <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs">AWS</span>
+                                                <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full text-xs">Docker</span>
+                                                <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full text-xs">Kubernetes</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-4 text-sm text-gray-900">8.8</td>
+                                        <td class="px-4 py-4 text-sm">
+                                            <button onclick="viewStudent('CS2024003')" class="text-blue-600 hover:text-blue-800 mr-2">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button onclick="messageStudent('CS2024003')" class="text-green-600 hover:text-green-800">
+                                                <i class="fas fa-message"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Messages Section -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-envelope text-green-600 mr-2"></i>Recent Messages
+                        </h3>
+                        <div id="messagesList" class="space-y-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm mr-3">
+                                            JD
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">John Doe (CS2024001)</h4>
+                                            <p class="text-gray-500 text-xs">2 hours ago</p>
+                                        </div>
+                                    </div>
+                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Unread</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">Thank you for considering my application. I'm very interested in the Software Engineer position...</p>
+                                <button onclick="replyToMessage('CS2024001')" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+                                    <i class="fas fa-reply mr-1"></i>Reply
+                                </button>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm mr-3">
+                                            JS
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">Jane Smith (CS2024002)</h4>
+                                            <p class="text-gray-500 text-xs">1 day ago</p>
+                                        </div>
+                                    </div>
+                                    <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs">Read</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">I have completed the technical assessment. When can I expect to hear back about the next steps?</p>
+                                <button onclick="replyToMessage('CS2024002')" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+                                    <i class="fas fa-reply mr-1"></i>Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recruiter Stats -->
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Company Stats</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Total Applications</span>
+                                <span class="text-2xl font-bold text-blue-600">10</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Shortlisted</span>
+                                <span class="text-2xl font-bold text-green-600">10</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Interviews Scheduled</span>
+                                <span class="text-2xl font-bold text-orange-600">10</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Hired</span>
+                                <span class="text-2xl font-bold text-purple-600">10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-plus mr-2"></i>Post New Job
+                            </button>
+                            <button class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">
+                                <i class="fas fa-download mr-2"></i>Export Applications
+                            </button>
+                            <button class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                                <i class="fas fa-chart-bar mr-2"></i>View Analytics
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Top Skills in Demand</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">React.js</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Python</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Java</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 72%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">AWS</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-orange-600 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Dashboard -->
+        <div id="analyticsDashboard" class="hidden fade-in">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Placement Analytics</h1>
+                <button onclick="showLogin()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                </button>
+            </div>
+
+            <div class="grid lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Total Students</p>
+                            <p class="text-3xl font-bold text-blue-600">1,247</p>
+                        </div>
+                        <i class="fas fa-users text-3xl text-blue-600"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Placement Rate</p>
+                            <p class="text-3xl font-bold text-green-600">87%</p>
+                        </div>
+                        <i class="fas fa-chart-line text-3xl text-green-600"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Top Package</p>
+                            <p class="text-3xl font-bold text-purple-600">₹45L</p>
+                        </div>
+                        <i class="fas fa-trophy text-3xl text-purple-600"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Companies</p>
+                            <p class="text-3xl font-bold text-orange-600">156</p>
+                        </div>
+                        <i class="fas fa-building text-3xl text-orange-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Top Recruiters</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold mr-3">G</div>
+                                <div>
+                                    <h4 class="font-semibold">Google</h4>
+                                    <p class="text-sm text-gray-600">Software Engineering</p>
+                                </div>
+                            </div>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">45 hired</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold mr-3">M</div>
+                                <div>
+                                    <h4 class="font-semibold">Microsoft</h4>
+                                    <p class="text-sm text-gray-600">Cloud Solutions</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">38 hired</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold mr-3">A</div>
+                                <div>
+                                    <h4 class="font-semibold">Amazon</h4>
+                                    <p class="text-sm text-gray-600">Full Stack Development</p>
+                                </div>
+                            </div>
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">32 hired</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Department-wise Placement</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm text-gray-600">Computer Science</span>
+                                <span class="text-sm font-semibold">92%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm text-gray-600">Electronics</span>
+                                <span class="text-sm font-semibold">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm text-gray-600">Mechanical</span>
+                                <span class="text-sm font-semibold">78%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-600 h-2 rounded-full" style="width: 78%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm text-gray-600">Civil</span>
+                                <span class="text-sm font-semibold">71%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-orange-600 h-2 rounded-full" style="width: 71%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Modal -->
+        <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+            <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mx-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">Send Message</h3>
+                    <button onclick="closeMessageModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">To: <span id="messageRecipient"></span></label>
+                    <textarea id="messageContent" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="Type your message here..."></textarea>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button onclick="closeMessageModal()" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                    <button onclick="sendMessage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentUser = null;
+        let currentView = 'login';
+
+        // Navigation functions
+        function showLogin() {
+            hideAllViews();
+            document.getElementById('loginSelection').classList.remove('hidden');
+            currentView = 'login';
+        }
+
+        function showStudentLogin() {
+            hideAllViews();
+            document.getElementById('studentLogin').classList.remove('hidden');
+            currentView = 'studentLogin';
+        }
+
+        function showRecruiterLogin() {
+            hideAllViews();
+            document.getElementById('recruiterLogin').classList.remove('hidden');
+            currentView = 'recruiterLogin';
+        }
+
+        function showAnalytics() {
+            hideAllViews();
+            document.getElementById('analyticsDashboard').classList.remove('hidden');
+            currentView = 'analytics';
+        }
+
+        function hideAllViews() {
+            const views = ['loginSelection', 'studentLogin', 'recruiterLogin', 'studentDashboard', 'recruiterDashboard', 'analyticsDashboard'];
+            views.forEach(view => {
+                document.getElementById(view).classList.add('hidden');
+            });
+        }
+
+        // Login functions
+        function loginStudent(event) {
+            event.preventDefault();
+            const studentId = document.getElementById('studentId').value;
+            const password = document.getElementById('studentPassword').value;
+            
+            if (studentId && password) {
+                currentUser = { type: 'student', id: studentId };
+                document.getElementById('profileStudentId').textContent = studentId;
+                hideAllViews();
+                document.getElementById('studentDashboard').classList.remove('hidden');
+                currentView = 'studentDashboard';
+            }
+        }
+
+        function loginRecruiter(event) {
+            event.preventDefault();
+            const email = document.getElementById('recruiterEmail').value;
+            const password = document.getElementById('recruiterPassword').value;
+            
+            if (email && password) {
+                currentUser = { type: 'recruiter', email: email };
+                hideAllViews();
+                document.getElementById('recruiterDashboard').classList.remove('hidden');
+                currentView = 'recruiterDashboard';
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            showLogin();
+        }
+
+        // Resume handling functions
+        function handleResumeUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('resumePreview').classList.remove('hidden');
+            }
+        }
+
+        function processResume() {
+            // Simulate OCR processing
+            const skills = ['JavaScript', 'React', 'Node.js', 'Python', 'SQL', 'Git', 'AWS', 'Docker'];
+            const extractedSkills = skills.slice(0, Math.floor(Math.random() * 5) + 3);
+            
+            const skillsContainer = document.getElementById('skillsTags');
+            skillsContainer.innerHTML = '';
+            
+            extractedSkills.forEach(skill => {
+                const tag = document.createElement('span');
+                tag.className = 'bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm';
+                tag.textContent = skill;
+                skillsContainer.appendChild(tag);
+            });
+            
+            document.getElementById('skillsSection').classList.remove('hidden');
+            
+            // Show success message
+            alert('Resume processed successfully! Skills have been extracted and tagged.');
+        }
+
+        // Recruiter functions
+        function viewStudent(studentId) {
+            alert(`Viewing detailed profile for student: ${studentId}`);
+        }
+
+        function messageStudent(studentId) {
+            document.getElementById('messageRecipient').textContent = studentId;
+            document.getElementById('messageModal').classList.remove('hidden');
+        }
+
+        function replyToMessage(studentId) {
+            messageStudent(studentId);
+        }
+
+        function closeMessageModal() {
+            document.getElementById('messageModal').classList.add('hidden');
+            document.getElementById('messageContent').value = '';
+        }
+
+        function sendMessage() {
+            const content = document.getElementById('messageContent').value;
+            if (content.trim()) {
+                alert('Message sent successfully!');
+                closeMessageModal();
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            showLogin();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96184f6971e58e8a',t:'MTc1MjkwODA5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+
+
+<script src="script.js" defer></script>
+</body>
+</html>
